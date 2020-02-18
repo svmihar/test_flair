@@ -1,4 +1,5 @@
 from flair.data import Dictionary
+from pathlib import Path
 import joblib
 from flair.models import LanguageModel
 from flair.trainers.language_model_trainer import LanguageModelTrainer, TextCorpus
@@ -7,6 +8,7 @@ import logging
 logging.basicConfig( format='%(asctime)s - %(message)s', datefmt='%m/%d/%Y %H:%M:%S', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+Path('../flair_models').mkdir(parents=True, exist_ok=True)
 # are you training a forward or backward LM?
 is_forward_lm = True
 
@@ -14,15 +16,19 @@ is_forward_lm = True
 dictionary: Dictionary = Dictionary.load('chars')
 """
 # get your corpus, process forward and at the character level, then dump to harddisk
-logger.info('loading the corpus')
-corpus = TextCorpus('/root/.fastai/data/idwiki/', dictionary, is_forward_lm, character_level=True) 
-logger.info('serializing corpus')
-joblib.dump(corpus, 'corpus.flair')
 """
 # load joblib dump to memory
-logger.info('now loading the corpus')
-corpus = joblib.load('corpus.flair')
 
+if Path('../flair_models/corpus.flair').is_file(): 
+	logger.info('corpus found')
+	logger.info('now loading the corpus')
+	corpus = joblib.load('../flair_models/corpus.flair')
+else: 
+	logger.info('making new corpus')
+	corpus = TextCorpus('/root/.fastai/data/idwiki/', dictionary, is_forward_lm, character_level=True) 
+	logger.info('serializing corpus')
+	joblib.dump(corpus, '../flair_models/corpus.flair')
+	logger.info('saving the corpus to ../flair_models')
 
 logger.info('loading corpus done, now creating language model')
 # instantiate your language model, set hidden size and number of layers
@@ -32,4 +38,4 @@ language_model = LanguageModel(dictionary, is_forward_lm, hidden_size=2048, nlay
 trainer = LanguageModelTrainer(language_model, corpus)
 
 logger.info('we have lift off, good luck ground control')
-trainer.train('../flair_models/', sequence_length=250, mini_batch_size=50, max_epochs=10)
+trainer.train('../flair_models/', sequence_length=250, mini_batch_size=250, max_epochs=10)

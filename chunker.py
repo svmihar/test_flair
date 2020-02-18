@@ -3,28 +3,29 @@ from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 
 data_path = Path('/root/.fastai/data/idwiki')
-
-big_data_energy = [ txt for txt in data_path.rglob('*.txt')]
-
 def chunks(l, n): 
 	for i in range(0,len(l), n): 
 		yield l[i:i+n]
-
-
 sentences = [] 
+"""
+big_data_energy = [ txt for txt in data_path.rglob('*.txt')]
+
+
+
 for line in tqdm(big_data_energy): 
 	a = open(line).read().splitlines()
 	for par in a: 
 		if len(par.split())>2: 
 			sentences.append(par)
-
+"""
+sentences = open(data_path/'guede.txt').read().splitlines()
 
 train_path = data_path/'train'
 train, y= train_test_split(sentences, test_size=.8, random_state=69)
 test,valid = train_test_split(y, test_size=.5, random_state=69)
 
 
-batches = chunks(train, 5000)
+batches = chunks(train, 10000)
 for i, batch in  tqdm(enumerate(batches)): 
 	with open(train_path/f'{i}.txt', 'w') as f: 
 		for tr in batch: 
