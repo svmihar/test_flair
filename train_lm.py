@@ -12,15 +12,13 @@ is_forward_lm = True
 
 # load the default character dictionary
 dictionary: Dictionary = Dictionary.load('chars')
-
-# get your corpus, process forward and at the character level, then dump to harddisk
 """
+# get your corpus, process forward and at the character level, then dump to harddisk
 logger.info('loading the corpus')
 corpus = TextCorpus('/root/.fastai/data/idwiki/', dictionary, is_forward_lm, character_level=True) 
 logger.info('serializing corpus')
 joblib.dump(corpus, 'corpus.flair')
 """
-
 # load joblib dump to memory
 logger.info('now loading the corpus')
 corpus = joblib.load('corpus.flair')
