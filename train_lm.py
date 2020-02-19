@@ -34,8 +34,12 @@ logger.info('loading corpus done, now creating language model')
 # instantiate your language model, set hidden size and number of layers
 language_model = LanguageModel(dictionary, is_forward_lm, hidden_size=2048, nlayers=1) 
 
-# train your language model
-trainer = LanguageModelTrainer(language_model, corpus)
+if Path('../flair_models/checkpoint.pt').is_file(): 
+	logger.info('checkpoint detected, resuming training')
+	trainer = LanguageModelTrainer.load_from_checkpoint('../flair_models/epoch_2.pt', corpus)
+else: 
+	# train your language model
+	trainer = LanguageModelTrainer(language_model, corpus)
 
 logger.info('we have lift off, good luck ground control')
-trainer.train('../flair_models/', sequence_length=250, mini_batch_size=250, max_epochs=10)
+trainer.train('../flair_models/', sequence_length=250, mini_batch_size=300, max_epochs=10, checkpoint=True)
