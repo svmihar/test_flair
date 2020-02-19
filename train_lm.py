@@ -36,7 +36,7 @@ language_model = LanguageModel(dictionary, is_forward_lm, hidden_size=2048, nlay
 
 if Path('../flair_models/checkpoint.pt').is_file(): 
 	logger.info('checkpoint detected, resuming training')
-	trainer = LanguageModelTrainer.load_from_checkpoint('../flair_models/epoch_2.pt', corpus)
+	trainer = LanguageModelTrainer.load_from_checkpoint('../flair_models/checkpoint.pt', corpus)
 else: 
 	# train your language model
 	trainer = LanguageModelTrainer(language_model, corpus)
