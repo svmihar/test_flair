@@ -42,4 +42,4 @@ else:
 	trainer = LanguageModelTrainer(language_model, corpus)
 
 logger.info('we have lift off, good luck ground control')
-trainer.train('../flair_models/', sequence_length=250, mini_batch_size=300, max_epochs=10, checkpoint=True)
+trainer.train('../flair_models/', sequence_length=250, mini_batch_size=150, max_epochs=100, checkpoint=True)
