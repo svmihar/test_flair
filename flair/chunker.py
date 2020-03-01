@@ -21,6 +21,7 @@ for line in tqdm(big_data_energy):
 sentences = open(data_path/'guede.txt').read().splitlines()
 
 train_path = data_path/'train'
+Path(train_path).mkdir(exist_ok=True, parents=True)
 train, y= train_test_split(sentences, train_size=.8, random_state=69)
 test,valid = train_test_split(y, test_size=.5, random_state=69)
 

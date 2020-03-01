@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 MODEL_PATH  = '../../flair_models/backwards/'
 MODEL_PATHLIB = Path(MODEL_PATH)
-MODEL_PATHLIB.mkdir(parents=True, exist_ok=True
+MODEL_PATHLIB.mkdir(parents=True, exist_ok=True)
 # are you training a forward or backward LM?
 is_forward_lm = False
 
@@ -22,10 +22,10 @@ dictionary: Dictionary = Dictionary.load('chars')
 """
 # load joblib dump to memory
 
-if MODEL_PATHLIB/'corpus.flair'.is_file(): 
+if Path(MODEL_PATHLIB/'corpus.flair').is_file(): 
 	logger.info('corpus found')
 	logger.info('now loading the corpus')
-	corpus = joblib.load('../flair_models/backwards/corpus.flair')
+	corpus = joblib.load(MODEL_PATHLIB/'corpus.flair')
 else: 
 	logger.info('making new corpus')
 	corpus = TextCorpus('/root/.fastai/data/idwiki/', dictionary, is_forward_lm, character_level=True) 
@@ -37,9 +37,9 @@ logger.info('loading corpus done, now creating language model')
 # instantiate your language model, set hidden size and number of layers
 language_model = LanguageModel(dictionary, is_forward_lm, hidden_size=2048, nlayers=1) 
 
-if MODEL_PATHLIB/'checkpoint.pt'.is_file(): 
+if Path(MODEL_PATHLIB/'checkpoint.pt').is_file(): 
 	logger.info('checkpoint detected, resuming training')
-	trainer = LanguageModelTrainer.load_from_checkpoint(f'{MODEL_PATH}/checkpoint.pt', corpus)
+	trainer = LanguageModelTrainer.load_from_checkpoint(MODEL_PATHLIB/'checkpoint.pt', corpus)
 else: 
 	# train your language model
 	trainer = LanguageModelTrainer(language_model, corpus)
