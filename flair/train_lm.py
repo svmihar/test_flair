@@ -45,4 +45,4 @@ else:
 	trainer = LanguageModelTrainer(language_model, corpus)
 
 logger.info('we have lift off, good luck ground control')
-trainer.train(MODEL_PATH, learning_rate=0.1,sequence_length=250, mini_batch_size=150, max_epochs=100, checkpoint=True)
+trainer.train(MODEL_PATH, learning_rate=0.1,sequence_length=250, mini_batch_size=650, max_epochs=100, checkpoint=True)
